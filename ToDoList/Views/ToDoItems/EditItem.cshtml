@@ -1,0 +1,69 @@
+﻿ @model TasksToDo
+<div class="container">
+    <div class="row">
+        <div>
+            <h2>Edit To-Do-Item</h2>
+            <div class="dropdown-divider"></div>
+            <form action="/ToDoItems/EditItem" method="post" enctype="multipart/form-data" class="col-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="hidden" class="form-control" name="Id" value="@Model.Id" />
+                    <input type="text" class="form-control" id="name" required name="Title" value="@Model.Title">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea class="form-control" id="description" name="Description" rows="2">@Model.Description</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deadline" class="form-label">Deadline:</label>
+                    <input type="datetime-local" class="form-control" name="DeadLine"
+                           value="@Model.DeadLine.ToString("yyyy-MM-ddTHH:mm")" id="deadline" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="PdfUrl" class="form-label">Choose File (.pdf):</label>
+                    <input type="file" class="form-control" name="PdfUrl" id="PdfUrl" accept=".pdf">
+                </div>
+
+                <div id="filePreview" style="margin-top: 10px;">
+                    <embed id="pdfPreview" src="~/Pdfs/@Model.PdfUrl" type="application/pdf" style="width: 100%; height: 500px;" />
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set minimum date and time for the deadline input
+        const deadlineInput = document.getElementById('deadline');
+        const now = new Date();
+        const minDateTime = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+        deadlineInput.setAttribute('min', minDateTime);
+
+        // File preview functionality
+        document.getElementById('PdfUrl').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const previewElement = document.getElementById('pdfPreview');
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewElement.src = e.target.result; // Set the source of the embed to the file content
+                    previewElement.style.display = 'block'; // Show the preview
+                };
+
+                reader.readAsDataURL(file); // Read the file as a data URL
+            } else {
+                previewElement.style.display = 'none'; // Hide preview if no file is selected
+            }
+        });
+    });
+</script>

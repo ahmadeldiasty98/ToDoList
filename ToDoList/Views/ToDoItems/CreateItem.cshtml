@@ -1,0 +1,46 @@
+﻿
+<div class="container">
+    <div class="row">
+        <div>
+            <h2 >
+                Create New List Item
+            </h2>
+            <div class="dropdown-divider">
+        </div>
+            <form action="/ToDoItems/CreateItem" method="post" enctype="multipart/form-data" class="col-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" required name="Title">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea class="form-control" id="description" name="Description" rows="1"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deadline" class="form-label">Deadline:</label>
+                    <input type="datetime-local" class="form-control" name="DeadLine" id="deadline" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="PdfUrl" class="form-label">Choose File (.pdf):</label>
+                    <input type="file" class="form-control" name="PdfUrl" id="PdfUrl"></input>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deadlineInput = document.getElementById('deadline');
+        const now = new Date();
+        const minDateTime = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+        deadlineInput.setAttribute('min', minDateTime);
+    });
+</script>
